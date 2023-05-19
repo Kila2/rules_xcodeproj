@@ -24,7 +24,6 @@ two line""",
     "TERM": None,
 }
 
-CONFIG = "rules_xcodeproj_integration"
 
 PROJECT_OPTIONS = project_options(
     development_region = "es",
@@ -59,8 +58,6 @@ EXTRA_FILES = [
 FAIL_FOR_INVALID_EXTRA_FILES_TARGETS = True
 
 ASSOCIATED_EXTRA_FILES = {
-    "//iOSApp/Source:iOSApp": ["//iOSApp:ownership.yaml"],
-    "//Lib": ["//Lib:README.md"],
 }
 
 UNFOCUSED_TARGETS = [
@@ -69,39 +66,8 @@ UNFOCUSED_TARGETS = [
 
 XCODEPROJ_TARGETS = [
     top_level_target(
-        label = "//CommandLine/CommandLineTool",
-        target_environments = ["device"],
-    ),
-    top_level_target(
-        label = "//CommandLine/CommandLineTool:UniversalCommandLineTool",
-        target_environments = ["device"],
-    ),
-    top_level_target(
-        label = "//CommandLine/Tests:CommandLineToolTests",
-        target_environments = ["device"],
-    ),
-    top_level_targets(
-        labels = [
-            "//iOSApp",
-            "//Lib:ios_Lib",
-            "//Lib/dist/dynamic:iOS",
-            "//Lib/dist/dynamic:tvOS",
-            "//Lib/dist/dynamic:watchOS",
-            "//tvOSApp",
-        ],
-        target_environments = ["device", "simulator"],
-    ),
-    "//Bundle",
-    "//iOSApp/Test/ObjCUnitTests:iOSAppObjCUnitTests",
-    "//iOSApp/Test/TestingUtils:macos_TestingUtils",
-    "//iMessageApp",
-    "//iOSApp/Test/SwiftUnitTests:iOSAppSwiftUnitTests",
-    "//macOSApp/Source:macOSApp",
-    "//macOSApp/Test/UITests:macOSAppUITests",
-    "//tvOSApp/Test/UITests:tvOSAppUITests",
-    "//tvOSApp/Test/UnitTests:tvOSAppUnitTests",
-    "//watchOSApp/Test/UITests:watchOSAppUITests",
-    "//watchOSAppExtension/Test/UnitTests:watchOSAppExtensionUnitTests",
+        label = "//macOSApp/Source:macOSApp",
+    )
 ]
 
 IOS_BUNDLE_ID = "rules-xcodeproj.example"
@@ -114,39 +80,4 @@ WATCHOS_BUNDLE_ID = "{}.watch".format(IOS_BUNDLE_ID)
 SCHEME_AUTOGENERATION_MODE = "all"
 
 def get_xcode_schemes():
-    return [
-        xcode_schemes.scheme(
-            name = "iOSAppUnitTests_Scheme",
-            test_action = xcode_schemes.test_action(
-                env = {
-                    "IOSAPPSWIFTUNITTESTS_CUSTOMSCHEMEVAR": "TRUE",
-                },
-                targets = [
-                    "//iOSApp/Test/SwiftUnitTests:iOSAppSwiftUnitTests",
-                    "//iOSApp/Test/ObjCUnitTests:iOSAppObjCUnitTests",
-                ],
-                post_actions = [
-                    xcode_schemes.pre_post_action(
-                        name = "Run After Tests",
-                        script = "echo \"Hi\"",
-                        expand_variables_based_on = "//iOSApp/Test/SwiftUnitTests:iOSAppSwiftUnitTests",
-                    ),
-                ],
-            ),
-        ),
-        xcode_schemes.scheme(
-            name = "iOSAppSwiftUnitTests_CommandLineArgs_Scheme",
-            test_action = xcode_schemes.test_action(
-                build_configuration = "AppStore",
-                env = {
-                    "IOSAPPSWIFTUNITTESTS_CUSTOMSCHEMEVAR": "TRUE",
-                },
-                args = [
-                    "--command_line_args=-AppleLanguages,(en)",
-                ],
-                targets = [
-                    "//iOSApp/Test/SwiftUnitTests:iOSAppSwiftUnitTests",
-                ],
-            ),
-        ),
-    ]
+    return []

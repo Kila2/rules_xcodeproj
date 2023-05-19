@@ -3,7 +3,6 @@ load(
     ":xcodeproj_targets.bzl",
     "ASSOCIATED_EXTRA_FILES",
     "BAZEL_ENV",
-    "CONFIG",
     "DEFAULT_XCODE_CONFIGURATION",
     "EXTRA_FILES",
     "FAIL_FOR_INVALID_EXTRA_FILES_TARGETS",
@@ -46,32 +45,12 @@ exports_files(["README.md"])
 #        --generator_output_groups=all_targets \
 #        'build --remote_download_minimal'
 #
-[
-    xcodeproj(
-        name = "xcodeproj-{}".format(simulator_cpu),
-        associated_extra_files = ASSOCIATED_EXTRA_FILES,
-        bazel_env = BAZEL_ENV,
-        build_mode = "xcode",
-        config = CONFIG,
-        default_xcode_configuration = DEFAULT_XCODE_CONFIGURATION,
-        extra_files = EXTRA_FILES,
-        fail_for_invalid_extra_files_targets = FAIL_FOR_INVALID_EXTRA_FILES_TARGETS,
-        ios_simulator_cpus = simulator_cpu,
-        pre_build = PRE_BUILD,
-        project_name = "Integration",
-        project_options = PROJECT_OPTIONS,
-        scheme_autogeneration_mode = SCHEME_AUTOGENERATION_MODE,
-        schemes = get_xcode_schemes(),
-        tags = ["manual"],
-        top_level_targets = XCODEPROJ_TARGETS,
-        tvos_simulator_cpus = simulator_cpu,
-        unfocused_targets = UNFOCUSED_TARGETS,
-        # watchOS Simulator CPU on Apple silicon doesn't have 'sim_' prefix
-        watchos_simulator_cpus = simulator_cpu.removeprefix("sim_"),
-        xcode_configurations = XCODE_CONFIGURATIONS,
-    )
-    for simulator_cpu in [
-        "sim_arm64",
-        "x86_64",
-    ]
-]
+xcodeproj(
+    name = "xcodeproj",
+    associated_extra_files = ASSOCIATED_EXTRA_FILES,
+    build_mode = "xcode",
+    extra_files = EXTRA_FILES,
+    project_name = "Integration",
+    tags = ["manual"],
+    top_level_targets = XCODEPROJ_TARGETS,
+)

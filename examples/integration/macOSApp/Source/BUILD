@@ -1,4 +1,4 @@
-load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
+load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application", "macos_command_line_application")
 load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group")
 load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
@@ -30,7 +30,21 @@ macos_application(
         "//macOSApp/Test:__subpackages__",
         "@rules_xcodeproj//xcodeproj:generated",
     ],
-    deps = [":macOSApp.library"],
+    deps = [
+        ":macOSApp.library",
+        "//macOSApp/LibB:LibB",
+        ":macOSCLI"
+    ],
+)
+
+macos_command_line_application(
+    name = "macOSCLI",
+    minimum_os_version = "12.0",
+    deps = [
+        ":macOSApp.library",
+        "//macOSApp/LibA:LibA",
+    ],
+    visibility = ["//visibility:public"]
 )
 
 apple_resource_group(
